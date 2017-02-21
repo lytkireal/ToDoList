@@ -8,20 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		D07019DE1E51ADFB00C1F54E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07019DD1E51ADFB00C1F54E /* AppDelegate.swift */; };
-		D07019E01E51ADFB00C1F54E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07019DF1E51ADFB00C1F54E /* ViewController.swift */; };
+		D07019E01E51ADFB00C1F54E /* ChecklistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07019DF1E51ADFB00C1F54E /* ChecklistViewController.swift */; };
 		D07019E31E51ADFB00C1F54E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D07019E11E51ADFB00C1F54E /* Main.storyboard */; };
 		D07019E51E51ADFB00C1F54E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D07019E41E51ADFB00C1F54E /* Assets.xcassets */; };
 		D07019E81E51ADFB00C1F54E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D07019E61E51ADFB00C1F54E /* LaunchScreen.storyboard */; };
+		D0CC5DAF1E5CC32C004CD77D /* ChecklistItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CC5DAE1E5CC32C004CD77D /* ChecklistItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D07019DA1E51ADFB00C1F54E /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D07019DD1E51ADFB00C1F54E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D07019DF1E51ADFB00C1F54E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D07019DF1E51ADFB00C1F54E /* ChecklistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistViewController.swift; sourceTree = "<group>"; };
 		D07019E21E51ADFB00C1F54E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D07019E41E51ADFB00C1F54E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D07019E71E51ADFB00C1F54E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D07019E91E51ADFB00C1F54E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0CC5DAE1E5CC32C004CD77D /* ChecklistItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChecklistItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,11 +57,12 @@
 			isa = PBXGroup;
 			children = (
 				D07019DD1E51ADFB00C1F54E /* AppDelegate.swift */,
-				D07019DF1E51ADFB00C1F54E /* ViewController.swift */,
+				D07019DF1E51ADFB00C1F54E /* ChecklistViewController.swift */,
 				D07019E11E51ADFB00C1F54E /* Main.storyboard */,
 				D07019E41E51ADFB00C1F54E /* Assets.xcassets */,
 				D07019E61E51ADFB00C1F54E /* LaunchScreen.storyboard */,
 				D07019E91E51ADFB00C1F54E /* Info.plist */,
+				D0CC5DAE1E5CC32C004CD77D /* ChecklistItem.swift */,
 			);
 			path = ToDoList;
 			sourceTree = "<group>";
@@ -136,7 +139,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D07019E01E51ADFB00C1F54E /* ViewController.swift in Sources */,
+				D07019E01E51ADFB00C1F54E /* ChecklistViewController.swift in Sources */,
+				D0CC5DAF1E5CC32C004CD77D /* ChecklistItem.swift in Sources */,
 				D07019DE1E51ADFB00C1F54E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -297,6 +301,7 @@
 				D07019EE1E51ADFB00C1F54E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
