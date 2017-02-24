@@ -24,29 +24,23 @@ class ChecklistViewContoller: UITableViewController {
   //data model of app
   required init? (coder aDecoder: NSCoder) {
     
-    let count = 50
-    
     /*
      This instantiates the array. Now items contains a valid array object,
      but the array has no ChecklistItem objects inside it yet.
      */
     items = [ChecklistItem]()//"()" tell Swift to make the new array object
-    
-    for i in 0...count-1 {
-      //This instantiates the ChecklistItem object. Notice the ().
-      print(i)
-      let row1item = ChecklistItem()
-      
-      //Gives values to the data items inside the new ChecklistItem object.
-      row1item.text = "Стакан воды"
-      row1item.checked = false
-      
-      //This adds the ChecklistItem object into the items array.
-      items.append(row1item)
-      
-    }
 
-    /*
+    //This instantiates the ChecklistItem object. Notice the ().
+    let row0item = ChecklistItem()
+      
+    //Gives values to the data items inside the new ChecklistItem object.
+    row0item.text = "Стакан воды"
+    row0item.checked = false
+      
+    //This adds the ChecklistItem object into the items array.
+    items.append(row0item)
+      
+  
     let row1item = ChecklistItem()
     row1item.text = "Утренний туалет"
     row1item.checked = false
@@ -63,13 +57,29 @@ class ChecklistViewContoller: UITableViewController {
     items.append(row3item)
     
     let row4item = ChecklistItem()
-    row4item.text = "Душ"
+    row4item.text = "Ванна"
     row4item.checked = false
     items.append(row4item)
-    */
+    
     super.init(coder: aDecoder)
   }
   
+  @IBAction func addItem() {
+    
+    let newRowIndex = items.count
+    
+    let item = ChecklistItem()
+    item.text = "я - новая строка"
+    item.checked = true
+    
+    items.append(item)
+    
+    let indexPath = IndexPath(row: newRowIndex, section: 0)
+    
+    let indexPaths = [indexPath]
+    
+    tableView.insertRows(at: indexPaths, with: .automatic)
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -109,7 +119,6 @@ class ChecklistViewContoller: UITableViewController {
       item.toggleChecked()
       configureCheckmark(for: cell, with: item)
     }
-    
     //deselect row if the user tapped
     tableView.deselectRow(at: indexPath, animated: true)
   }
