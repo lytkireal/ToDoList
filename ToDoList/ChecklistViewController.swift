@@ -23,7 +23,15 @@ class ChecklistViewContoller: UITableViewController,
   
   
   //data model of app
-  required init? (coder aDecoder: NSCoder) {
+  required init? (coder aDecoder: NSCoder) { // to save the checklist items we will use the NSCoder system
+    
+    /* 
+     1) When we add a view controller to a storyboard,
+     Xcode uses the NSCoder system to write this object
+     to a file (encoding).
+     2) Then when our app starts up, it uses NSCoder again
+     to read the objects from the storyboard file (decoding).
+    */
     
     /*
      This instantiates the array. Now items contains a valid array object,
@@ -63,6 +71,10 @@ class ChecklistViewContoller: UITableViewController,
     items.append(row4item)
     
     super.init(coder: aDecoder)
+    
+    print ("Documents folder is \(documentsDirectory())")
+    print ("Data file path is \(dataFilePath())")
+  
   }
 
   override func viewDidLoad() {
@@ -76,7 +88,7 @@ class ChecklistViewContoller: UITableViewController,
   }
 
 //-----------------------------------------------------------------------------------------------
-//                      *** rows count in section (table view data source method) ***
+//                      *** Rows count in section (table view data source method) ***
 //-----------------------------------------------------------------------------------------------
   
   override func tableView(_ tableView: UITableView,
@@ -87,8 +99,8 @@ class ChecklistViewContoller: UITableViewController,
   
 //-----------------------------------------------------------------------------------------------
 //                      *** Create cells for each row in the table data source ***
+//                                   (table view data source method)
 //-----------------------------------------------------------------------------------------------
-  //table view data source method
   
   override func tableView(_ tableView: UITableView,
                           cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -101,10 +113,16 @@ class ChecklistViewContoller: UITableViewController,
     configureCheckmark(for: cell, with: item)
     
     return cell // UITableViewCell object
-    
   }
+
+//-----------------------------------------------------------------------------------------------
+
   
-  //method of seleceted rows (table view delegate method)
+//-----------------------------------------------------------------------------------------------
+//                      *** Method of selected rows ***
+//                        (table view delegate method)
+//-----------------------------------------------------------------------------------------------
+  
   override func tableView(_ tableView: UITableView,
                           didSelectRowAt indexPath: IndexPath) {
     
@@ -116,10 +134,12 @@ class ChecklistViewContoller: UITableViewController,
     }
     //deselect row if the user tapped
     tableView.deselectRow(at: indexPath, animated: true)
+    
+    saveChecklistItems()
   }
   
 //-----------------------------------------------------------------------------------------------
-//                      *** Deleting rows ***
+//                      *** Deleting rows (swipe-to-delete function) ***
 //-----------------------------------------------------------------------------------------------
   
   override func tableView(_ tableView: UITableView,
@@ -130,6 +150,7 @@ class ChecklistViewContoller: UITableViewController,
     //2
     let indexPaths = [indexPath]
     tableView.deleteRows(at: indexPaths, with: .automatic)
+    saveChecklistItems()
   }
   
 //-----------------------------------------------------------------------------------------------
@@ -158,8 +179,6 @@ class ChecklistViewContoller: UITableViewController,
             
       if let indexPath = tableView.indexPath(for: sender as! UITableViewCell) {
         controller.itemToEdit = items[indexPath.row]
-        
-        
       }
     }
   }
@@ -189,15 +208,15 @@ class ChecklistViewContoller: UITableViewController,
   }
   
 //-----------------------------------------------------------------------------------------------
-//                      *** implement methods from ItemDetailViewControllerDelegate ***
+//                      *** Implement methods from ItemDetailViewControllerDelegate ***
 //-----------------------------------------------------------------------------------------------
-  
+  // 1
   func itemDetailViewControllerDidCancel(_ controller: ItemDetailViewController) {
     
     dismiss(animated: true, completion: nil)
   
   }
-  
+  // 2
   // add new ChecklistItem
   func itemDetailViewController(_ controller: ItemDetailViewController,
                              didFinishAdding item: ChecklistItem) {
@@ -209,7 +228,10 @@ class ChecklistViewContoller: UITableViewController,
     tableView.insertRows(at: indexPaths, with: .automatic)
     
     dismiss(animated: true, completion: nil)
+    saveChecklistItems()
+    
   }
+  // 3
   // edit existing to-do items
   func itemDetailViewController(_ controller: ItemDetailViewController,
                                didFinishEditing item: ChecklistItem) {
@@ -223,12 +245,55 @@ class ChecklistViewContoller: UITableViewController,
           configureText(for: cell, with: item)
         }
       }
-      dismiss(animated: true, completion: nil)
+    dismiss(animated: true, completion: nil)
+    saveChecklistItems()
   }
 //-----------------------------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------------------------
+//                      *** The documents directory ***
+//-----------------------------------------------------------------------------------------------
   
+  func documentsDirectory() -> URL {
+    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+    
+    return paths[0]
+  }
   
+  func dataFilePath() -> URL {
+    return documentsDirectory().appendingPathComponent("Checklists.plist")
+    // "Checklists.plist" lives inside the Documents directory.
+  }
   
+//-----------------------------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------------------------
+//                      *** Saving the checklist items ***
+//-----------------------------------------------------------------------------------------------
+  
+  func saveChecklistItems() {
+    
+    let data = NSMutableData()
+    
+    // 1. NSKeyedArchiver, which is a form of NSCoder that creates plist files,
+    // encodes the array and all the ChecklistItems in it into some of binary data
+    // format that can be written to a file.
+    let archiver = NSKeyedArchiver(forWritingWith: data)
+    
+    archiver.encode(items, forKey: "ChecklistItems")
+    archiver.finishEncoding()
+    
+    
+    // 2. That data is placed in an NSMutableData object(data),
+    // which will write itself to the file specified by dataFilePath() method.
+    data.write(to: dataFilePath(), atomically: true)
+  }
+
+//-----------------------------------------------------------------------------------------------
+
+
+
+
 }
 
 

@@ -83,6 +83,7 @@ class ItemDetailViewController: UITableViewController, UITextFieldDelegate {
     item.checked = false
     
     delegate?.itemDetailViewController(self, didFinishAdding: item)
+    
     }
   }
   
