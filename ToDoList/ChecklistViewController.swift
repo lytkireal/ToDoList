@@ -144,10 +144,23 @@ class ChecklistViewContoller: UITableViewController,
       // 2
       let navigationController = segue.destination as! UINavigationController
       //3
-      let controller = navigationController.topViewController
-                                                  as! AddItemViewController
+      let controller = navigationController.topViewController as! ItemDetailViewController
       //4
       controller.delegate = self
+      
+    } else if segue.identifier == "EditItem" {
+      
+      let navigationController = segue.destination as! UINavigationController
+      
+      let controller = navigationController.topViewController as! ItemDetailViewController
+      
+      controller.delegate = self
+            
+      if let indexPath = tableView.indexPath(for: sender as! UITableViewCell) {
+        controller.itemToEdit = items[indexPath.row]
+        
+        
+      }
     }
   }
   
@@ -158,11 +171,12 @@ class ChecklistViewContoller: UITableViewController,
   //configure all rows to unchecked state at start of app
   func configureCheckmark(for cell: UITableViewCell,
                           with item: ChecklistItem) {
+    let label = cell.viewWithTag(1001) as! UILabel
     
     if item.checked {
-      cell.accessoryType = .checkmark
+      label.text = "√"
     } else {
-      cell.accessoryType = .none
+      label.text = ""
     }
   }
 //-----------------------------------------------------------------------------------------------
@@ -175,17 +189,17 @@ class ChecklistViewContoller: UITableViewController,
   }
   
 //-----------------------------------------------------------------------------------------------
-//                      *** implement methods from AddItemViewControllerDelegate ***
+//                      *** implement methods from ItemDetailViewControllerDelegate ***
 //-----------------------------------------------------------------------------------------------
   
-  func addItemViewControllerDidCancel(_ controller: AddItemViewController) {
+  func itemDetailViewControllerDidCancel(_ controller: ItemDetailViewController) {
     
     dismiss(animated: true, completion: nil)
   
   }
   
   // add new ChecklistItem
-  func addItemViewController(_ controller: AddItemViewController,
+  func itemDetailViewController(_ controller: ItemDetailViewController,
                              didFinishAdding item: ChecklistItem) {
     let newRowIndex = items.count
     items.append(item)
@@ -195,10 +209,25 @@ class ChecklistViewContoller: UITableViewController,
     tableView.insertRows(at: indexPaths, with: .automatic)
     
     dismiss(animated: true, completion: nil)
-
+  }
+  // edit existing to-do items
+  func itemDetailViewController(_ controller: ItemDetailViewController,
+                               didFinishEditing item: ChecklistItem) {
+      
+      if let index = items.index(of: item) {
+        
+        let indexPath = IndexPath(row: index, section: 0)
+        
+        if let cell = tableView.cellForRow(at: indexPath) {
+          
+          configureText(for: cell, with: item)
+        }
+      }
+      dismiss(animated: true, completion: nil)
+  }
 //-----------------------------------------------------------------------------------------------
   
-  }
+  
   
 }
 
