@@ -25,7 +25,9 @@ class ChecklistViewContoller: UITableViewController,
   //data model of app
   required init? (coder aDecoder: NSCoder) { // to save the checklist items we will use the NSCoder system
     
-    /* 
+    // Put values into your instance variable and constants.
+    
+    /*
      1) When we add a view controller to a storyboard,
      Xcode uses the NSCoder system to write this object
      to a file (encoding).
@@ -37,43 +39,10 @@ class ChecklistViewContoller: UITableViewController,
      This instantiates the array. Now items contains a valid array object,
      but the array has no ChecklistItem objects inside it yet.
      */
-    items = [ChecklistItem]()//"()" tell Swift to make the new array object
-
-    //This instantiates the ChecklistItem object. Notice the ().
-    let row0item = ChecklistItem()
-      
-    //Gives values to the data items inside the new ChecklistItem object.
-    row0item.text = "Стакан воды"
-    row0item.checked = false
-      
-    //This adds the ChecklistItem object into the items array.
-    items.append(row0item)
-      
-  
-    let row1item = ChecklistItem()
-    row1item.text = "Утренний туалет"
-    row1item.checked = false
-    items.append(row1item)
-    
-    let row2item = ChecklistItem()
-    row2item.text = "Коктейль"
-    row2item.checked = false
-    items.append(row2item)
-    
-    let row3item = ChecklistItem()
-    row3item.text = "Зарядка"
-    row3item.checked = false
-    items.append(row3item)
-    
-    let row4item = ChecklistItem()
-    row4item.text = "Ванна"
-    row4item.checked = false
-    items.append(row4item)
-    
-    super.init(coder: aDecoder)
-    
-    print ("Documents folder is \(documentsDirectory())")
-    print ("Data file path is \(dataFilePath())")
+    items = [ChecklistItem]() // instance variable items has a proper value(a new array).
+    super.init(coder: aDecoder) // to ensure the rest of the view controller is properly
+    // unfrozen from the storyboard.
+    loadChecklistItems() // the method to do the real work of loading the plist file.
   
   }
 
@@ -154,6 +123,7 @@ class ChecklistViewContoller: UITableViewController,
   }
   
 //-----------------------------------------------------------------------------------------------
+  
 //-----------------------------------------------------------------------------------------------
 //                      *** Prepare-for-segue ***
 //-----------------------------------------------------------------------------------------------
@@ -291,9 +261,26 @@ class ChecklistViewContoller: UITableViewController,
 
 //-----------------------------------------------------------------------------------------------
 
-
-
-
+//-----------------------------------------------------------------------------------------------
+//                      *** Unfreeze objects from *.plist file ***
+//-----------------------------------------------------------------------------------------------
+  
+  func loadChecklistItems() {
+    // 1
+    let path = dataFilePath() // URL type
+    
+    // 2
+    if let data = try? Data(contentsOf: path) { // try to load the contents of Checklists.plist
+      //into a new Data object
+      
+      //3
+      let unarchiver = NSKeyedUnarchiver(forReadingWith: data) // create unarchiver and ask it
+      // to decode that data into the items array.
+      items = unarchiver.decodeObject(forKey: "ChecklistItems")
+        as! [ChecklistItem]
+      unarchiver.finishDecoding()
+    }
+  }
 }
 
 

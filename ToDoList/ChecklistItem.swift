@@ -12,12 +12,16 @@ class ChecklistItem: NSObject, NSCoding {
   var text = ""
   var checked = false
   
+  // Coder
   func encode(with aCoder: NSCoder) {
     aCoder.encode(text, forKey: "Text")
     aCoder.encode(checked, forKey: "Checked")
   }
   
+  // Decoder
   required init? (coder aDecoder: NSCoder) {
+    text = aDecoder.decodeObject(forKey: "Text") as! String
+    checked = aDecoder.decodeBool(forKey: "Checked")
     super.init()
   }
   
@@ -28,5 +32,12 @@ class ChecklistItem: NSObject, NSCoding {
   func toggleChecked() {
     checked = !checked
   }
-  
+
+
 }
+
+
+
+
+
+
