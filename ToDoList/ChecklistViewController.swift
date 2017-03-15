@@ -40,14 +40,19 @@ class ChecklistViewContoller: UITableViewController,
      but the array has no ChecklistItem objects inside it yet.
      */
     items = [ChecklistItem]() // instance variable items has a proper value(a new array).
+    
     super.init(coder: aDecoder) // to ensure the rest of the view controller is properly
+    
     // unfrozen from the storyboard.
     loadChecklistItems() // the method to do the real work of loading the plist file.
   
   }
 
+  var checklist: Checklist!
+  
   override func viewDidLoad() {
     super.viewDidLoad()
+    title = checklist.name
     // Do any additional setup after loading the view, typically from a nib.
   }
 
@@ -170,6 +175,9 @@ class ChecklistViewContoller: UITableViewController,
   }
 //-----------------------------------------------------------------------------------------------
 
+//-----------------------------------------------------------------------------------------------
+//                      *** Configuring text for rows in the table view ***
+//-----------------------------------------------------------------------------------------------
   func configureText (for cell: UITableViewCell,
                       with item: ChecklistItem) {
     
@@ -178,7 +186,7 @@ class ChecklistViewContoller: UITableViewController,
   }
   
 //-----------------------------------------------------------------------------------------------
-//                      *** Implement methods from ItemDetailViewControllerDelegate ***
+//                      *** Implement methods for being ItemDetailViewControllerDelegate ***
 //-----------------------------------------------------------------------------------------------
   // 1
   func itemDetailViewControllerDidCancel(_ controller: ItemDetailViewController) {
@@ -277,7 +285,7 @@ class ChecklistViewContoller: UITableViewController,
       let unarchiver = NSKeyedUnarchiver(forReadingWith: data) // create unarchiver and ask it
       // to decode that data into the items array.
       items = unarchiver.decodeObject(forKey: "ChecklistItems")
-        as! [ChecklistItem]
+                                                            as! [ChecklistItem]
       unarchiver.finishDecoding()
     }
   }
