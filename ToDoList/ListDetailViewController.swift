@@ -75,7 +75,7 @@ class ListDetailViewController: UITableViewController, UITextFieldDelegate {
   @IBAction func done() {
   
   if let checklist = checklistToEdit{
-    checklist.name = textField.text!
+    checklist.name = textField.text! // exclamation point converts the optional String value to regular String
   delegate?.listDetailViewController(self, didFinishEditing: checklist)
   } else {
     let checklist = Checklist(name: textField.text!)

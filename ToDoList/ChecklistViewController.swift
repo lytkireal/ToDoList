@@ -19,8 +19,8 @@ class ChecklistViewContoller: UITableViewController,
    At this point, items does not have a value yet.
    */
   
-  var items: [ChecklistItem]
-  
+  /*
+   var items: [ChecklistItem]
   
   //data model of app
   required init? (coder aDecoder: NSCoder) { // to save the checklist items we will use the NSCoder system
@@ -45,8 +45,9 @@ class ChecklistViewContoller: UITableViewController,
     
     // unfrozen from the storyboard.
     loadChecklistItems() // the method to do the real work of loading the plist file.
+   }
+   */
   
-  }
 
   var checklist: Checklist!
   
@@ -68,7 +69,7 @@ class ChecklistViewContoller: UITableViewController,
   override func tableView(_ tableView: UITableView,
                           numberOfRowsInSection section: Int)
     -> Int {
-      return items.count
+      return checklist.items.count
   }
   
 //-----------------------------------------------------------------------------------------------
@@ -81,7 +82,7 @@ class ChecklistViewContoller: UITableViewController,
     
     let cell = tableView.dequeueReusableCell(withIdentifier: "ChecklistItem", for: indexPath)
     
-    let item = items[indexPath.row]
+    let item = checklist.items[indexPath.row]
     
     configureText(for: cell, with: item)
     configureCheckmark(for: cell, with: item)
@@ -102,14 +103,13 @@ class ChecklistViewContoller: UITableViewController,
     
     //set $ unset checkmarks of rows
     if let cell = tableView.cellForRow(at: indexPath) {
-      let item = items[indexPath.row]
+      let item = checklist.items[indexPath.row]
       item.toggleChecked()
       configureCheckmark(for: cell, with: item)
     }
     //deselect row if the user tapped
     tableView.deselectRow(at: indexPath, animated: true)
     
-    saveChecklistItems()
   }
   
 //-----------------------------------------------------------------------------------------------
@@ -120,11 +120,10 @@ class ChecklistViewContoller: UITableViewController,
                           commit editingStyle: UITableViewCellEditingStyle,
                           forRowAt indexPath: IndexPath) {
     //1
-    items.remove(at: indexPath.row)
+    checklist.items.remove(at: indexPath.row)
     //2
     let indexPaths = [indexPath]
     tableView.deleteRows(at: indexPaths, with: .automatic)
-    saveChecklistItems()
   }
   
 //-----------------------------------------------------------------------------------------------
@@ -153,7 +152,7 @@ class ChecklistViewContoller: UITableViewController,
       controller.delegate = self
             
       if let indexPath = tableView.indexPath(for: sender as! UITableViewCell) {
-        controller.itemToEdit = items[indexPath.row]
+        controller.itemToEdit = checklist.items[indexPath.row]
       }
     }
   }
@@ -198,15 +197,14 @@ class ChecklistViewContoller: UITableViewController,
   // add new ChecklistItem
   func itemDetailViewController(_ controller: ItemDetailViewController,
                              didFinishAdding item: ChecklistItem) {
-    let newRowIndex = items.count
-    items.append(item)
+    let newRowIndex = checklist.items.count
+    checklist.items.append(item)
     
     let indexPath = IndexPath(row: newRowIndex, section: 0)
     let indexPaths = [indexPath]
     tableView.insertRows(at: indexPaths, with: .automatic)
     
     dismiss(animated: true, completion: nil)
-    saveChecklistItems()
     
   }
   // 3
@@ -214,7 +212,7 @@ class ChecklistViewContoller: UITableViewController,
   func itemDetailViewController(_ controller: ItemDetailViewController,
                                didFinishEditing item: ChecklistItem) {
       
-      if let index = items.index(of: item) {
+      if let index = checklist.items.index(of: item) {
         
         let indexPath = IndexPath(row: index, section: 0)
         
@@ -224,10 +222,10 @@ class ChecklistViewContoller: UITableViewController,
         }
       }
     dismiss(animated: true, completion: nil)
-    saveChecklistItems()
   }
 //-----------------------------------------------------------------------------------------------
 
+/*
 //-----------------------------------------------------------------------------------------------
 //                      *** The documents directory ***
 //-----------------------------------------------------------------------------------------------
@@ -244,7 +242,9 @@ class ChecklistViewContoller: UITableViewController,
   }
   
 //-----------------------------------------------------------------------------------------------
-
+*/
+  
+/*
 //-----------------------------------------------------------------------------------------------
 //                      *** Saving the checklist items ***
 //-----------------------------------------------------------------------------------------------
@@ -258,7 +258,7 @@ class ChecklistViewContoller: UITableViewController,
     // format that can be written to a file.
     let archiver = NSKeyedArchiver(forWritingWith: data)
     
-    archiver.encode(items, forKey: "ChecklistItems")
+    archiver.encode(checklist.items, forKey: "ChecklistItems")
     archiver.finishEncoding()
     
     
@@ -268,7 +268,9 @@ class ChecklistViewContoller: UITableViewController,
   }
 
 //-----------------------------------------------------------------------------------------------
-
+*/
+  
+/*
 //-----------------------------------------------------------------------------------------------
 //                      *** Unfreeze objects from *.plist file ***
 //-----------------------------------------------------------------------------------------------
@@ -284,11 +286,12 @@ class ChecklistViewContoller: UITableViewController,
       //3
       let unarchiver = NSKeyedUnarchiver(forReadingWith: data) // create unarchiver and ask it
       // to decode that data into the items array.
-      items = unarchiver.decodeObject(forKey: "ChecklistItems")
+      checklist.items = unarchiver.decodeObject(forKey: "ChecklistItems")
                                                             as! [ChecklistItem]
       unarchiver.finishDecoding()
     }
   }
+*/
 }
 
 

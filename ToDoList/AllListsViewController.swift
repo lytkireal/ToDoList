@@ -10,34 +10,8 @@ import UIKit
 
 class AllListsViewController: UITableViewController, ListDetailViewControllerDelegate {
 
-  var lists: [Checklist]
-  
-  required init? (coder aDecoder: NSCoder) {
-    // 1
-    lists = [Checklist]()
+  var dataModel: DataModel!
     
-    // 2
-    super.init(coder: aDecoder)
-
-    // 3
-    var list = Checklist(name: "Дни рождения" )
-    lists.append(list)
-    
-    // 4
-    list = Checklist(name: "Продукты" )
-    lists.append(list)
-    
-    list = Checklist(name: "Крутые приложения")
-    lists.append(list)
-    
-    list = Checklist(name: "Список дел")
-    lists.append(list)
-    
-    
-  }
-  
-  
-  
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -62,7 +36,7 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
   override func tableView(_ tableView: UITableView,
                           didSelectRowAt indexPath: IndexPath) {
     
-    let checklist = lists[indexPath.row]
+    let checklist = dataModel.lists[indexPath.row]
     performSegue(withIdentifier: "ShowChecklist", sender: checklist)
   }
   
@@ -71,7 +45,7 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
   override func tableView(_ tableView: UITableView,
                             numberOfRowsInSection section: Int) -> Int {
     // #warning Incomplete implementation, return the number of rows
-    return lists.count
+    return dataModel.lists.count
   }
 
   
@@ -80,7 +54,7 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
       
     let cell = makeCell(for: tableView)
     
-    let checklist = lists[indexPath.row]
+    let checklist = dataModel.lists[indexPath.row]
     cell.textLabel!.text = checklist.name
     cell.accessoryType = .detailDisclosureButton
     
@@ -137,8 +111,8 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
   // done button tapped (adding)
   func listDetailViewController(_ controller: ListDetailViewController,
                                 didFinishAdding checklist: Checklist) {
-    let newRowIndex = lists.count
-    lists.append(checklist)
+    let newRowIndex = dataModel.lists.count
+    dataModel.lists.append(checklist)
     
     let indexPath = IndexPath(row: newRowIndex, section: 0)
     let indexPaths = [indexPath]
@@ -150,7 +124,7 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
   // done button tapped (editing)
   func listDetailViewController(_ controller: ListDetailViewController,
                                 didFinishEditing checklist: Checklist) {
-    if let index = lists.index(of: checklist) {
+    if let index = dataModel.lists.index(of: checklist) {
       
       let indexPath = IndexPath(row: index, section: 0)
       
@@ -174,7 +148,7 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
                           commit editingStyle: UITableViewCellEditingStyle,
                           forRowAt indexPath: IndexPath) {
     
-    lists.remove(at: indexPath.row)
+    dataModel.lists.remove(at: indexPath.row)
     
     let indexPaths = [indexPath]
     tableView.deleteRows(at: indexPaths, with: .automatic)
@@ -198,13 +172,15 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
                                     as! ListDetailViewController
     controller.delegate = self
     
-    let checklist = lists[indexPath.row]
+    let checklist = dataModel.lists[indexPath.row]
     controller.checklistToEdit = checklist
     
     present(navigationController, animated: true, completion: nil)
   }
   
 //-----------------------------------------------------------------------------------------------
+
+
   
 }
 
